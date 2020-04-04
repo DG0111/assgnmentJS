@@ -2,9 +2,126 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Home page</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.css">
+    <script src="../node_modules/axios/dist/axios.min.js"></script>
+    <script src="../node_modules/sweetalert/dist/sweetalert.min.js"></script>
 </head>
+
 <body>
-$END$
+<nav class="navbar navbar-expand-xl navbar-light">
+    <div class="container">
+        <!-- Brand -->
+        <a class="navbar-brand" href="./overview.html">
+            Shopper.
+        </a>
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDocsTopCollapse"
+                aria-controls="navbarDocsTopCollapse" aria-expanded="true" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Collapse -->
+        <div class="navbar-collapse collapse show" id="navbarDocsTopCollapse" style="">
+            <!-- Nav -->
+            <ul class="navbar-nav mx-auto" id="showCate">
+
+            </ul>
+
+            <form class="form-inline mt-2 mt-md-0 mr-5">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
+            <!-- Button -->
+            <div>
+                <a class="btn btn-block btn-sm btn-dark" id="myCart" href="#">My card (0)</a>
+            </div>
+
+        </div>
+
+    </div>
+</nav>
+<div class="card-body container">
+    <h3>My Cart</h3>
+    <div id="showCart">
+
+    </div>
+
+    <div class="float-right">
+        <a href="" class="btn btn-outline-secondary pull-right">
+            Update shopping cart
+        </a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="border-top container">
+    <div class="fa-pull-right">
+        <div class="pull-right" style="margin: 5px">
+            Total price: <b id="showMoney"></b>
+        </div>
+        <a href="" class="btn btn-success">Checkout</a>
+    </div>
+</div>
+<div class="container p-0 clearfix">
+</div>
+</div>
+<footer class="container py-5">
+    <div class="row">
+        <div class="col-12 col-md">
+            <h5><a href="index.html">NGO VAN LONG</a></h5>
+            <small class="d-block mb-3 text-muted">© 2020-2021</small>
+        </div>
+        <div class="col-6 col-md">
+            <h5>Features</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="#">Cool stuff</a></li>
+                <li><a class="text-muted" href="#">Random feature</a></li>
+                <li><a class="text-muted" href="#">Team feature</a></li>
+                <li><a class="text-muted" href="#">Stuff for developers</a></li>
+                <li><a class="text-muted" href="#">Another one</a></li>
+                <li><a class="text-muted" href="#">Last time</a></li>
+            </ul>
+        </div>
+        <div class="col-6 col-md">
+            <h5>Resources</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="#">Resource</a></li>
+                <li><a class="text-muted" href="#">Resource name</a></li>
+                <li><a class="text-muted" href="#">Another resource</a></li>
+                <li><a class="text-muted" href="#">Final resource</a></li>
+            </ul>
+        </div>
+        <div class="col-6 col-md">
+            <h5>Resources</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="#">Business</a></li>
+                <li><a class="text-muted" href="#">Education</a></li>
+                <li><a class="text-muted" href="#">Government</a></li>
+                <li><a class="text-muted" href="#">Gaming</a></li>
+            </ul>
+        </div>
+        <div class="col-6 col-md">
+            <h5>About</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="#">Team</a></li>
+                <li><a class="text-muted" href="#">Locations</a></li>
+                <li><a class="text-muted" href="#">Privacy</a></li>
+                <li><a class="text-muted" href="#">Terms</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+<script src="../node_modules/lodash/lodash.js"></script>
+<script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+<script src="../public/js/categories.js"></script>
+<script src="../public/js/showCart.js"></script>
+
 </body>
 </html>

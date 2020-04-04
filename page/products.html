@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>show product</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.css">
+    <script src="../node_modules/axios/dist/axios.min.js"></script>
+    <script src="../node_modules/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+<body>
+<nav class="container navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">NGO VAN LONG</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto" id="showCate">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+
+<section class="container p-0 pt-4">
+    <h2>All Products</h2>
+    <div class="card-deck mt-4 row" id="showProducts">
+
+    </div>
+</section>
+
+<footer class="container py-5">
+    <div class="row">
+        <div class="col-12 col-md">
+            <h5><a href="index.html">NGO VAN LONG</a></h5>
+            <small class="d-block mb-3 text-muted">© 2020-2021</small>
+        </div>
+        <div class="col-6 col-md">
+            <h5>Features</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="#">Cool stuff</a></li>
+                <li><a class="text-muted" href="#">Random feature</a></li>
+                <li><a class="text-muted" href="#">Team feature</a></li>
+                <li><a class="text-muted" href="#">Stuff for developers</a></li>
+                <li><a class="text-muted" href="#">Another one</a></li>
+                <li><a class="text-muted" href="#">Last time</a></li>
+            </ul>
+        </div>
+        <div class="col-6 col-md">
+            <h5>Resources</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="#">Resource</a></li>
+                <li><a class="text-muted" href="#">Resource name</a></li>
+                <li><a class="text-muted" href="#">Another resource</a></li>
+                <li><a class="text-muted" href="#">Final resource</a></li>
+            </ul>
+        </div>
+        <div class="col-6 col-md">
+            <h5>Resources</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="#">Business</a></li>
+                <li><a class="text-muted" href="#">Education</a></li>
+                <li><a class="text-muted" href="#">Government</a></li>
+                <li><a class="text-muted" href="#">Gaming</a></li>
+            </ul>
+        </div>
+        <div class="col-6 col-md">
+            <h5>About</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="#">Team</a></li>
+                <li><a class="text-muted" href="#">Locations</a></li>
+                <li><a class="text-muted" href="#">Privacy</a></li>
+                <li><a class="text-muted" href="#">Terms</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+<script src="../node_modules/lodash/lodash.js"></script>
+<script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script>
+
+    // show cate
+    const urlCate = 'http://5e79bb5b17314d00161335e8.mockapi.io/category';
+    let cate = [];
+    let showCate = document.querySelector('#showCate');
+    prinCate = (arr) => {
+        _.map(arr, (value) => {
+            showCate.innerHTML += `
+            <li class="nav-item">
+                <a class="nav-link" href="${urlCate + '/' + value.id}">${value.name}</a>
+            </li>
+        `;
+        })
+    }
+
+    axios.get(urlCate)
+        .then(function (response) {
+            cate = response.data;
+            // handle success
+            prinCate(cate);
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .then(function () {
+            // always executed
+        });
+
+    // show products
+
+    var showProducts = document.querySelector('#showProducts');
+    pritProducts = (array) => {
+        // in ra table - su dung foreach
+        _.forEach(array, (value) => {
+            showProducts.innerHTML += `
+                    <div class="col-md-4 mb-4">
+                        <div class="card mb-4 box-shadow">
+                            <img class="card-img-top" style="height: 225px; width: 100%; display: block;" src="${value.image}" data-holder-rendered="true">
+                            <div class="card-body">
+                              <p class="card-text">${value.name}</p>
+                              <p class="card-text">${value.detail}</p>
+                              <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                  <button type="button" class="btn btn-sm btn-outline-secondary">Add card</button>
+                                </div>
+                                <small class="text-muted">${value.price} VNĐ</small>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                `
+        });
+    }
+
+    const url = 'http://5e79bb5b17314d00161335e8.mockapi.io';
+    let pro = [];
+    // lấy data tất cả products
+    axios.get(`${url}/category`)
+        .then(response => response.data)
+        .then(cate => Promise.all(
+            _.map(cate, category => axios.get(`${url}/category/${category.id}/products`))
+            )
+        )
+        .then(product => {
+            _.forEach(product, (value, index) => {
+                _.forEach(value.data, (x, y) => {
+                    pro.push(x);
+                })
+            })
+            pritProducts(pro);
+        })
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>edit product</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../node_modules/@fortawesome/fontawesome-free/css/all.css">
+    <script src="../../node_modules/axios/dist/axios.min.js"></script>
+
+
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../public/template/node_modules/dropify/dist/css/dropify.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../public/template/images/favicon.png"/>
+</head>
+<body>
+
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">NGO VAN LONG</a>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 sidebar bg-secondary">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a href="#" class="text-light nav-link active"><i class="fas fa-box-open"></i>
+                        PRODUCTS</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="col-md-9 ml-sm-auto col-lg-10">
+            <div>
+                <h3>EDIT PRODUCT</h3>
+            </div>
+            <div class="py-5 col-8 formEdit">
+                <div class="form-group">
+                    <label>Name product</label>
+                    <input class="form-control" type="text" hidden placeholder="Name product">
+                    <input class="form-control" type="text" placeholder="Name product">
+                </div>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label for="">Image new</label>
+                        <input type="file" class="dropify"/>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>Image old</label>
+                        <br>
+                        <img id="imageOld" src=""
+                             width="320px" alt="">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Price product</label>
+                    <input class="form-control" type="number" placeholder="Price product">
+                </div>
+                <div class="form-group">
+                    <label>Detail product</label>
+                    <input class="form-control" type="text" placeholder="Detail product">
+                </div>
+                <button id="btnEdit" class="btn btn-primary">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../node_modules/lodash/lodash.js"></script>
+<script src="../../node_modules/jquery/dist/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<!--end script-->
+
+<!--template-->
+<script src="../../public/template/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../../public/template/node_modules/popper.js/dist/umd/popper.min.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page-->
+<script src="../../public/template/node_modules/dropify/dist/js/dropify.min.js"></script>
+
+<script src="../../public/template/js/dropify.js"></script>
+<!-- End custom js for this page-->
+
+<script>
+
+
+    dd = (x) => console.log(x);
+    //Lấy id từ localstrorage
+    var idEdit = localStorage.id;
+
+    var arrayEdit = [];
+
+    // lấy dữ liệu sản phẩm edit
+    const url = `http://5e79bb5b17314d00161335e8.mockapi.io/category/3/products/${idEdit}`;
+
+    let inputEdit = document.querySelectorAll('input');
+
+    // Make a request for a user with a given ID
+    axios.get(url)
+        .then(function (response) {
+            // handle success
+            arrayEdit = response.data;
+            let imageOld = document.querySelector('#imageOld');
+
+            imageOld.src = arrayEdit.image;
+            inputEdit[0].value = arrayEdit.id;
+            inputEdit[1].value = arrayEdit.name;
+            inputEdit[3].value = arrayEdit.price;
+            inputEdit[4].value = arrayEdit.detail;
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .then(function () {
+            // always executed
+        });
+
+    var btnEdit = document.querySelector('#btnEdit');
+
+    // luu sua
+
+    btnEdit.onclick = () => {
+
+        // sử lý khi không có hình Ảnh
+        let imageEdit = inputEdit[2].value;
+        if (imageEdit == '') {
+            imageEdit = arrayEdit.image;
+        } else {
+            // sử lý hình ảnh. update vào forder
+            
+        }
+
+
+        let array = {
+            "name": inputEdit[1].value,
+            "image": imageEdit,
+            "price": inputEdit[3].value,
+            "detail": inputEdit[4].value,
+        };
+
+        axios.put(url, array, {
+            headers: {
+                "Accept": "application/json",
+                "Content-type": "application/json",
+            }
+        })
+            .then(function (response) {
+                location.replace("http://localhost:52886/assgnment_js/page/admin/showProducts.html?edit=true")
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+
+    }
+
+</script>
+
+</body>
+</html>
