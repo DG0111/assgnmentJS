@@ -51,7 +51,7 @@ const printProductNew = (arr) => {
                               <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                   <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                  <button type="button" idProduct="${value.id}" class="btn btn-sm btn-outline-secondary addToCart">Add card</button>
+                                  <button type="button" idProduct="${value.id}" nameProduct="${value.name}" priceProduct="${value.price}" imageProduct="${value.image}" class="btn btn-sm btn-outline-secondary addToCart">Add card</button>
                                 </div>
                                 <small class="text-muted">${value.price} VNĐ</small>
                               </div>
@@ -61,10 +61,6 @@ const printProductNew = (arr) => {
                 `;
     });
 
-    const addToCard = () => {
-        let addToCart = document.querySelector(".addToCart");
-        return addToCart;
-    }
 }
 
 const printProductSelling = (arr) => {  // show product selling :)
@@ -79,7 +75,7 @@ const printProductSelling = (arr) => {  // show product selling :)
                               <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                   <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                  <button type="button" idProduct="${value.id}" class="btn btn-sm btn-outline-secondary addToCart">Add card</button>
+                                  <button type="button" idProduct="${value.id}" nameProduct="${value.name}" priceProduct="${value.price}" imageProduct="${value.image}" class="btn btn-sm btn-outline-secondary addToCart">Add card</button>
                                 </div>
                                 <small class="text-muted">${value.price} VNĐ</small>
                               </div>
@@ -159,11 +155,15 @@ let productSeliingPromise = new Promise((resolve, reject) => {
     })
     .then((resolve) => {
         // add to cart
-        let addToCart = document.querySelectorAll(".addToCart");
+        let btnAddToCart = document.querySelectorAll(".addToCart");
 
-        for (let k = 0; k < addToCart.length; k++) {
-            addToCart[k].onclick = () => {
-                cartNumber(productsAll[k]);
+        for (let k = 0; k < btnAddToCart.length; k++) {
+            btnAddToCart[k].onclick = () => {
+                let idProduct = btnAddToCart[k].getAttribute("idProduct");
+                let nameProduct = btnAddToCart[k].getAttribute("nameProduct")
+                let priceProduct = btnAddToCart[k].getAttribute("priceProduct")
+                let imageProduct = btnAddToCart[k].getAttribute("imageProduct")
+                addToCart(idProduct, nameProduct, priceProduct, imageProduct); // chuyen id vao addToCart
             }
         }
         // end add to carts
@@ -172,40 +172,56 @@ let productSeliingPromise = new Promise((resolve, reject) => {
 
 //end  product selling
 
-// funtion cartNumber()  -- thêm sản phẩm vào cart luu bằng local -- số lượng :)
+
+let cart = [];
+
+// kiểm tra sản phẩm có trong giỏ hàng hay chưa ?
+
 var carNumbers = document.querySelector("#carNumbers");
-const cartNumber = (product) => {
-    let productNumbers = localStorage.getItem('cartNumbers');
-    productNumbers = parseInt(productNumbers);
-    if (productNumbers) {
-        localStorage.setItem('cartNumbers', productNumbers + 1);
-        carNumbers.textContent = productNumbers + 1;
+
+const addToCart = (id, name, price, image) => {
+    let i;
+    let obj = {
+        id: id,
+        name: name,
+        price: price,
+        image: image,
+    };
+    let flag = false;
+    for (i = 0; i < cart.length; i++) {
+        if (cart[i].id === obj.id) {
+            flag = true;
+            break;
+        }
+    }
+    if (flag === false) { // san pham da co trong cart
+        obj.quantity = 1;
+        obj.sumPrice = obj.price * obj.quantity;
+        cart.push(obj);
     } else {
-        localStorage.setItem('cartNumbers', 1);
-        carNumbers.textContent = 1;
+        cart[i].quantity += 1;
+        cart[i].sumPrice = cart[i].price*cart[i].quantity;
+    }
+    let cartNumbers = 0;
+    for (i = 0; i < cart.length; i++) {
+        cartNumbers += cart[i].quantity; // tinh so luong san pham trong cart
+    }
+    carNumbers.textContent = cartNumbers;
+    sessionStorage.setItem('myCart', JSON.stringify(cart));
+}
+
+const checkSession = () => {
+    let objSession = JSON.parse(sessionStorage.getItem("myCart"));
+    let a = 0;
+    if (objSession) {
+        _.forEach(objSession, (value) => {
+            a += value.quantity;
+        });
+        cart = objSession;
+        carNumbers.textContent = a;
+    } else {
+        carNumbers.textContent = a;
     }
 
-    console.log(product);
-
 }
-// end funtion cartNumber()
-
-
-// funtion oloadCart  // khi load lai trang nó sẽ lấy cái số cart có trong local :) giải thích hơi ngu
-
-const onloadCart = () => {
-    let productNumbers = localStorage.getItem("cartNumbers");
-
-    if (productNumbers) {
-        carNumbers.textContent = productNumbers;
-    } else {
-        carNumbers.textContent = 0; // nếu chưa có thì nó sẽ hiện số Không
-    }
-}
-onloadCart(); // Nó lè, Chạy hàm này
-
-
-// end funtion oloadCart
-
-
-
+checkSession();

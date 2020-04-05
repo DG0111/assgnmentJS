@@ -9,11 +9,11 @@
     <script src="../node_modules/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
-<body>
+<body class="container">
 <nav class="navbar navbar-expand-xl navbar-light">
     <div class="container">
         <!-- Brand -->
-        <a class="navbar-brand" href="./overview.html">
+        <a class="navbar-brand" href="./index.html">
             Shopper.
         </a>
         <!-- Toggler -->
@@ -24,48 +24,56 @@
         <!-- Collapse -->
         <div class="navbar-collapse collapse show" id="navbarDocsTopCollapse" style="">
             <!-- Nav -->
-            <ul class="navbar-nav mx-auto" id="showCate">
-
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">News</a>
+                </li>
             </ul>
 
             <form class="form-inline mt-2 mt-md-0 mr-5">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
-
             <!-- Button -->
-            <div>
-                <a class="btn btn-block btn-sm btn-dark" id="myCart" href="#">My card (0)</a>
-            </div>
-
+            <!--            <div class="pt-2">-->
+            <!--                <a id="myCart" href="showCart.html">My card (<span id="carNumbers"></span>)</a>-->
+            <!--            </div>-->
         </div>
-
     </div>
 </nav>
-<div class="card-body container">
-    <h3>My Cart</h3>
-    <div id="showCart">
-
-    </div>
-
-    <div class="float-right">
-        <a href="" class="btn btn-outline-secondary pull-right">
-            Update shopping cart
-        </a>
-    </div>
-    <div class="clearfix"></div>
-</div>
-<div class="border-top container">
-    <div class="fa-pull-right">
-        <div class="pull-right" style="margin: 5px">
-            Total price: <b id="showMoney"></b>
+<div class="row container my-5" id="mainCheckCard">
+    <div class="col-md-12 col-lg-8">
+        <div class="items" id="listProducts">
         </div>
-        <a href="" class="btn btn-success">Checkout</a>
+    </div>
+    <div class="col-md-12 col-lg-4">
+        <div class="">
+            <h3>Summary</h3>
+            <div class="list-group-item">Subtotal : </span><span class="text-secondary" id="subtotal"></span></div>
+            <div class="list-group-item">Shipping : </span><span> $1</span></div>
+            <div class="list-group-item">Total : </span><span id="total"></span></div>
+            <button type="button" class="btn btn-primary btn-lg btn-block">Checkout</button>
+        </div>
     </div>
 </div>
+<div class="text-center my-5 py-5" id="noneCard">
+    <h1 class="text-center mb-5">NONE CARD</h1>
+    <a class="btn btn-success text-center" href="index.html">BUY NOW</a>
+</div>
+</div>
+
 <div class="container p-0 clearfix">
 </div>
-</div>
+
 <footer class="container py-5">
     <div class="row">
         <div class="col-12 col-md">
@@ -113,14 +121,13 @@
     </div>
 </footer>
 <script src="../node_modules/lodash/lodash.js"></script>
+<script src="../node_modules/moment/min/moment.min.js"></script>
 <script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
 <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-
-<script src="../public/js/categories.js"></script>
 <script src="../public/js/showCart.js"></script>
 
 </body>

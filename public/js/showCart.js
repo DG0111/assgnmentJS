@@ -1,62 +1,141 @@
-// let myCart = sessionStorage.getItem('myCart');
-// var showMoney = document.getElementById("showMoney");
-//
-// let arr = JSON.parse(myCart);
-//
-// if()
-//
-// const boxCart = document.querySelector("#showCart");
-//
-// const totalPrice = () => {
-//     let total = 0;
-//     _.map(arr,(value)=>{
-//         total += value.price;
-//     })
-//     showMoney.innerText = `${total} VNĐ`;
-// }
-//
-// showCart = (arr) => {
-//     if(arr.length == 0 || !arr) {
-//         boxCart.innerHTML = 'NONE';
-//         return;
-//     }
-//     _.map(arr, (value) => {
-//         boxCart.innerHTML += `
-//             <div class="row border-bottom pb-3 mb-3">
-//         <div class="col-12 col-sm-12 col-md-2 text-center">
-//             <img class="img-responsive" src="${value.image}" alt="prewiew" width="120" height="80">
-//         </div>
-//         <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
-//             <h4 class="product-name"><strong>${value.name}</strong></h4>
-//         </div>
-//         <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
-//             <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
-//                 <h6><strong>${value.price} VNĐ<span class="text-muted"> x </span></strong></h6>
-//             </div>
-//             <div class="col-4 col-sm-4 col-md-4">
-//                 <div class="quantity">
-//                     <input type="number" step="1" max="99" min="1" value="${value.count}" title="Qty" class="qty" size="4">
-//                 </div>
-//             </div>
-//             <div class="col-2 col-sm-2 col-md-2 text-right">
-//                 <button type="button" onclick="destroyPro(${value.id})" class="btn btn-outline-danger btn-xs">
-//                     <i class="fa fa-trash" aria-hidden="true"></i>
-//                 </button>
-//             </div>
-//         </div>
-//     </div>
-//         `;
-//     })
-//
-//     totalPrice();
-// }
-//
-// showCart(arr);
-//
-// destroyPro = (x) => {
-//     arr = _.filter(arr, (value)=>value.id != x);
-//     sessionStorage.removeItem('myCart');
-//     sessionStorage.setItem('myCart', JSON.stringify(arr));
-//     boxCart.innerHTML = '';
-//     showCart(arr);
-// }
+const listProducts = document.querySelector("#listProducts");
+const mainCheckCard = document.querySelector("#mainCheckCard");
+const noneCard = document.querySelector("#noneCard");
+const subtotal = document.querySelector("#subtotal");
+const total = document.querySelector("#total");
+
+
+let myCart = [];
+
+const checkSession = () => { // kiem tra session khi reset lai trang
+    let objSession = JSON.parse(sessionStorage.getItem("myCart"));
+    let a = 0;
+
+    if (objSession) {
+        noneCard.style.display = "none";
+    } else {
+        mainCheckCard.style.display = "none";
+    }
+}
+
+const showCart = (arr) => {
+    listProducts.innerHTML = "";
+    _.forEach(arr, value => {
+        listProducts.innerHTML += `
+        <div class="mb-3 shadow">
+        <h3 class="mb-3">Checkout</h3>
+            <div class="row">
+                <div class="col-md-3">
+                    <img class="img-fluid mx-auto d-block image" src="${value.image}">
+                </div>
+                <div class="col-md-8">
+                    <div class="info">
+                        <div class="row">
+                            <div class="col-md-5 product-name">
+                                <div class="product-name">
+                                    <a href="#">${value.name}</a>
+<!--                                    <div class="product-info">-->
+<!--                                        <div>Display: <span class="value">5 inch</span></div>-->
+<!--                                        <div>RAM: <span class="value">4GB</span></div>-->
+<!--                                        <div>Memory: <span class="value">32GB</span></div>-->
+<!--                                    </div>-->
+                                </div>
+                            </div>
+                            <div class="col-md-4 quantity">
+                                <label for="quantity">Quantity: </label>
+                                <input id="quantity" idProduct="${value.id}" type="number" min="1" max="10" value="${value.quantity}" class="form-control quantity-input">
+                                <button id="deletePro" idProduct="${value.id}" class="mt-1 btn btn-danger">DELETE</button>
+                            </div>
+                            <div class="col-md-3 price">
+                                <span id="price" >${value.sumPrice} $</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `
+    })
+}
+
+const summary = (arr) => {
+    let subTotal = 0;
+
+    for (let i = 0; i < arr.length; i++) {
+        subTotal += arr[i].sumPrice;
+        subtotal.textContent = subTotal + " $";
+        total.textContent = (subTotal + 1) + "$";
+    }
+}
+
+// ------------------------- ^^^ ----------- chán chả buồn code
+
+let promise = new Promise(resolve => {
+    // checkSession
+    checkSession();
+    myCart = JSON.parse(sessionStorage.getItem("myCart"));
+    return resolve(myCart);
+});
+
+promise.then((myCart) => {
+    return new Promise(resolve => {
+        try {
+            showCart(myCart);
+            summary(myCart);
+            return resolve(myCart);
+        } catch (err) {
+            console.log(err);
+        }
+    });
+});
+
+promise.then((myCart) => { // onchange o số lượng để thay đổi số lượng
+    return new Promise(resolve => {
+        console.log("LEU LUE");
+        let price = document.querySelectorAll("#price");
+        let quantity = document.querySelectorAll(".quantity-input");
+        let quantilyProducts = 0;
+        let idProducts = 0;
+        let subTotal = 0;
+
+        for (let i = 0; i < quantity.length; i++) {
+            quantity[i].onchange = () => {
+                quantilyProducts = quantity[i].value;
+                idProducts = quantity[i].getAttribute("idProduct");
+                for (let j = 0; j < myCart.length; j++) {
+
+                    if (myCart[j].id === idProducts) {
+                        myCart[j].quantity = quantilyProducts;
+                        myCart[j].sumPrice = myCart[j].price * quantilyProducts; // chán không thèm comment ^_^
+                        price[i].textContent = myCart[j].sumPrice + ' $';
+                        sessionStorage.setItem('myCart', JSON.stringify(myCart));
+                        summary(myCart);
+                    }
+                }
+            }
+        }
+
+        return resolve(myCart);
+    })
+})
+    .then((myCart) => {
+        return new Promise(resolve => {
+            let deletePro = document.querySelectorAll("#deletePro");
+            let idProduct = 0;
+            for (let i = 0; i < deletePro.length; i++) {
+                deletePro[i].onclick = () => {
+                    console.log(1);
+                    idProduct = deletePro[i].getAttribute("idProduct");
+                    let arrDelete = _.remove(myCart, value => value.id !== idProduct);
+                    myCart = arrDelete;
+                    sessionStorage.setItem('myCart', JSON.stringify(myCart));
+                    summary(myCart);
+                    showCart(myCart);
+                    location.reload(); // thề luôn cần thằng này thực sự :)
+                }
+            }
+            return resolve(myCart);
+        })
+    })
+
+
