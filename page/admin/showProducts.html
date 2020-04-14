@@ -12,18 +12,18 @@
 <body>
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">NGO VAN LONG</a>
-    </nav>
-        <div class="container-fluid">
-            <div class="row">
-                <nav class="col-md-2 sidebar bg-secondary">
-                    <div class="sidebar-sticky">
-                        <ul class="nav flex-column">
-                            <li class="nav-item"><a href="#" class="text-light nav-link active"><i class="fas fa-box-open"></i>
-                                PRODUCTS</a></li>
-                        </ul>
-                    </div>
-                </nav>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">NGO VAN LONG</a>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 sidebar bg-secondary">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a href="#" class="text-light nav-link active"><i class="fas fa-box-open"></i>
+                        PRODUCTS</a></li>
+                </ul>
+            </div>
+        </nav>
         <div class="col-md-9 ml-sm-auto col-lg-10">
             <div>
                 <h3>List Products</h3>
@@ -34,10 +34,11 @@
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">image</th>
+                        <th scope="col">cate</th>
                         <th scope="col">price</th>
                         <th scope="col">handle</th>
                         <th scope="col">
-                            <button type="button" class="btn-success">Thêm</button>
+                            <a href="editProduct.html" type="button" class="btn btn-success">Thêm</a>
                         </th>
                     </tr>
                     </thead>
@@ -70,12 +71,13 @@
             tbodyProduct.innerHTML += `
                     <tr>
                       <td>${value.name}</td>
-                      <td>${value.image}</td>
+                      <td><img src="${value.image}" width="100" alt=""></td>
+                      <td>cate</td>
                       <td>${value.price}</td>
                       <td>${value.detail}</td>
                       <td>
                         <button type="button" id="removeProduct" onclick="removeProduct(${value.id}, ${value.categoryId})" class="btn btn-danger">Delete</button>
-                        <a type="button" href="editProduct.html" onclick="editProduct(${value.id})" class="btn btn-success">Edit</a>
+                        <a type="button" href="editProduct.html" onclick="editProduct(${value.id}, ${value.categoryId})" class="btn btn-success">Edit</a>
                       </td>
                     </tr>
                 `
@@ -91,54 +93,15 @@
             _.map(cate, category => axios.get(`${url}/category/${category.id}/products`))
             )
         )
-    .then(product => {
-        _.forEach(product, (value,index) => {
-            _.forEach(value.data, (x,y)=> {
-                pro.push(x);
-            })
-        })
-        showProduct(pro);
-    })
+        .then(product => {
+            _.forEach(product, (value, index) => {
+                _.forEach(value.data, (x, y) => {
+                    pro.push(x);
+                })
+            });
+            showProduct(pro);
+        });
 
-
-    // const url = 'http://5e79bb5b17314d00161335e8.mockapi.io/category/3/products';
-    // // Make a request for a user with a given ID
-    // let pro = [];
-    // // lấy API từ trên mockapi sử dụng thằng axios
-    //
-    // var tbodyProduct = document.querySelector('#tbodyProdcut');
-    // showProduct = (array) => {
-    //     // in ra table - su dung foreach
-    //     _.forEach(array, (value) => {
-    //         tbodyProduct.innerHTML += `
-    //                 <tr>
-    //                   <td>${value.name}</td>
-    //                   <td>${value.image}</td>
-    //                   <td>${value.price}</td>
-    //                   <td>${value.detail}</td>
-    //                   <td>
-    //                     <button type="button" id="removeProduct" onclick="removeProduct(${value.id})" class="btn btn-danger">Delete</button>
-    //                     <a type="button" href="editProduct.html" onclick="editProduct(${value.id})" class="btn btn-success">Edit</a>
-    //                   </td>
-    //                 </tr>
-    //             `
-    //     });
-    // }
-    //
-    // axios.get(url)
-    //     .then(function (response) {
-    //         // handle success
-    //         pro = response.data;
-    //         showProduct(pro)
-    //     })
-    //     .catch(function (error) {
-    //         // handle error
-    //         console.log(error);
-    //     })
-    //     .then(function () {
-    //         // always executed
-    //     });
-    //
     // remove product
 
     removeProduct = (id, categoryId) => {
@@ -152,7 +115,7 @@
             .then((willDelete) => {
                 if (willDelete) {
                     tbodyProduct.innerHTML = ''; // vì trên kia dùng += lên giờ mới phải để nó 'rỗng'
-                    _.remove(pro, (value) => value.id == id); // xóa phần tử trong mảng
+                    _.remove(pro, (value) => value.id === id); // xóa phần tử trong mảng
                     showProduct(pro); // rồi cho hiển thị lại.
                     let urlRemove = `http://5e79bb5b17314d00161335e8.mockapi.io/category/${categoryId}/products/${id}`;
                     axios.delete(urlRemove)
@@ -174,29 +137,38 @@
                     swal("Your imaginary file is safe!");
                 }
             });
-    }
+    };
 
     // edit product
-    //
-    // editProduct = (id) => {
-    //     localStorage.setItem('id', id);
-    // }
-    //
-    // // edit thanh cong thi hien thị thông bóa
-    // window.location.href.replace(location.hash, '').replace(
-    //     /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-    //     function (m, key, value) { // callback
-    //         if(value == 'true' && key == 'edit'){
-    //             swal({
-    //                 title: "Good job!",
-    //                 text: "Edit product success!",
-    //                 icon: "success",
-    //                 button: "Aww yiss!",
-    //             });
-    //         }
-    //     }
-    // );
 
+    editProduct = (id, idCategories) => {
+        function obj(idPro, idCate) {
+            this.idPro = idPro;
+            this.idCate = idCate;
+        }
+
+        let pro = new obj(id, idCategories);
+
+        console.log(pro);
+
+        localStorage.setItem('products', JSON.stringify(pro));
+    };
+
+
+    // edit thanh cong thi hien thị thông bóa
+    window.location.href.replace(location.hash, '').replace(
+        /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+        function (m, key, value) { // callback
+            if (value === 'true' && key === 'edit') {
+                swal({
+                    title: "Good job!",
+                    text: "Edit product success!",
+                    icon: "success",
+                    button: "Aww yiss!",
+                });
+            }
+        }
+    );
 
     // edit thanh cong
 

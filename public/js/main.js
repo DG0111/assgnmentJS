@@ -179,7 +179,7 @@ let cart = [];
 
 var carNumbers = document.querySelector("#carNumbers");
 
-const addToCart = (id, name, price, image) => {
+let addToCart = (id, name, price, image) => {
     let i;
     let obj = {
         id: id,
